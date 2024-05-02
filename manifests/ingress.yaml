@@ -1,0 +1,23 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: basic-app-1
+  namespace: basic-app-1
+status:
+  loadBalancer:
+    ingress:
+      - hostname: localhost
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: app1.ibstorm.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: basic-app-1
+                port:
+                  number: 1338

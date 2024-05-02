@@ -1,0 +1,54 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: afflo-core-qa1
+  namespace: afflo-core-qa1
+
+status:
+  loadBalancer:
+    ingress:
+      - ip: 34.128.177.219
+spec:
+  tls:
+    - hosts:
+        - qa1.txc.afflo.dev
+      secretName: afflo-core-qa1-tls-certificate
+  rules:
+    - host: qa1.txc.afflo.dev
+      http:
+        paths:
+          - path: /api/v1/services/external/itransplant
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: tgln-itransplant-ingester
+                port:
+                  number: 80
+          - path: /api/*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: afflo-api
+                port:
+                  number: 8080
+          - path: /auth/*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: afflo-api
+                port:
+                  number: 8080
+          - path: /sidekiq/*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: afflo-api
+                port:
+                  number: 8080
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: afflo-ui
+                port:
+                  number: 8080

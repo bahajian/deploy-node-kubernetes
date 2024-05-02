@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: basic-app-1
+  name: basic-app-1
+  namespace: basic-app-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: basic-app-1
+  template:
+    metadata:
+      labels:
+        app: basic-app-1
+    spec:
+      containers:
+      - image: bahajian/basic-app:v0.0.1
+        name: basic-app-1
+        ports:
+        - containerPort: 1338
+          name: http
+      nodeSelector:
+        beta.kubernetes.io/os: linux
